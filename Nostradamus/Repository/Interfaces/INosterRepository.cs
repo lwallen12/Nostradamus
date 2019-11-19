@@ -1,4 +1,5 @@
-﻿using Nostradamus.Models;
+﻿using Nostradamus.DTOs;
+using Nostradamus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace Nostradamus.Repository.Interfaces
 {
     public interface INosterRepository : IRepositoryBase<Noster>
     {
-        Task<IEnumerable<Noster>> FindAllWithIncludes();
+        Task<IEnumerable<NosterDto>> FindAllWithIncludes();
+
+        Noster GetForToken(string userName);
     }
 }

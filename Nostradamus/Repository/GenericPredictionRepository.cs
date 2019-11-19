@@ -34,11 +34,12 @@ namespace Nostradamus.Repository
 
         /// <summary>
         /// In order to preserve history, this will be set to inactive, not actually deleted. 
-        /// So it hides base class implementation
+        /// But I still want to have a base class implementation.
+        /// Perhaps this should be defined at the Base level, but I feel each class would have its own implementation
         /// </summary>
         /// <param name="genericPrediction"></param>
         /// <returns></returns>
-        public async new Task Delete(GenericPrediction genericPrediction)
+        public async Task MarkDelete(GenericPrediction genericPrediction)
         {
             genericPrediction.Active = false;
             genericPrediction.SnapEndDate = DateTime.Now;
@@ -46,6 +47,15 @@ namespace Nostradamus.Repository
             _nostradamusContext.Set<GenericPrediction>().Update(genericPrediction);
             await _nostradamusContext.SaveChangesAsync();
 
+        }
+
+        public async Task MarkUpdate(GenericPrediction genericPrediction)
+        {
+            await this.MarkDelete(genericPrediction);
+
+            var copyGenericPrediction = genericPrediction;
+
+            await this.Create(copyGenericPrediction);
         }
     }
 }

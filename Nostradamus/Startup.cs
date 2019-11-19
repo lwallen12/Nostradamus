@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Nostradamus.Models;
+using Nostradamus.Repository;
+using Nostradamus.Repository.Interfaces;
 
 namespace Nostradamus
 {
@@ -33,6 +35,8 @@ namespace Nostradamus
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NostradamusContext>();
+
+            services.AddScoped<IUnitofWork, UnitofWork>();
 
             services.AddIdentity<Noster, IdentityRole>()
                 .AddEntityFrameworkStores<NostradamusContext>()

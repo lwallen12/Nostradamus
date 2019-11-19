@@ -89,7 +89,7 @@ namespace Nostradamus.Controllers
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SOME_RANDOM_KEY_DO_NOT_SHARE"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var creds =  new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expires = DateTime.Now.AddDays(Convert.ToDouble(30));
 
             var token = new JwtSecurityToken(
@@ -109,6 +109,9 @@ namespace Nostradamus.Controllers
         {
             return "Protected area";
         }
+
+
+
 
         public class LoginDto
         {

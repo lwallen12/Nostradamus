@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Nostradamus.Models;
 using Nostradamus.Repository.Interfaces;
 using System;
@@ -21,5 +22,7 @@ namespace Nostradamus.Repository
                 .Include(ge => ge.Noster)
                 .Include(ge => ge.GenericPredictions);
         }
+
+        
     }
 }
