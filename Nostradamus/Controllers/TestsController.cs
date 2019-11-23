@@ -90,21 +90,21 @@ namespace Nostradamus.Controllers
             return genericEventDto;
         }
 
-        [HttpPost("event")]
-        public async Task<IActionResult> PostGenericEvent([FromBody] GenericEvent genericEvent)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPost("event")]
+        //public async Task<IActionResult> PostGenericEvent([FromBody] GenericEvent genericEvent)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            genericEvent.CreationDate = DateTime.Now;
+        //    genericEvent.CreationDate = DateTime.Now;
 
-            _context.GenericEvent.Add(genericEvent);
-            await _context.SaveChangesAsync();
+        //    _context.GenericEvent.Add(genericEvent);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGenericEvent", new { id = genericEvent.Id }, genericEvent);
-        }
+        //    return CreatedAtAction("GetGenericEvent", new { id = genericEvent.Id }, genericEvent);
+        //}
 
         // GET: api/GenericEvents
         [HttpGet("allevents")]
