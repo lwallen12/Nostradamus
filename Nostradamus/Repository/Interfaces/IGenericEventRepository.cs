@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nostradamus.DTOs;
 using Nostradamus.Models;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace Nostradamus.Repository.Interfaces
 {
     public interface IGenericEventRepository : IRepositoryBase<GenericEvent>
     {
-        IQueryable<GenericEvent> FindAllWithIncludes();
+        Task<IEnumerable<GenericEventDto>> FindAllWithIncludes();
 
-        //Task<GenericEvent> CreateWithReturn(GenericEvent genericEvent);
+        Task<GenericEventDto> Create(GenericEvent genericEvent);
     }
 }

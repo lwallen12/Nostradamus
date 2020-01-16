@@ -18,10 +18,10 @@ namespace Nostradamus.DTOs
         public string Title { get; set; }
         public string Description { get; set; }
         public string DateOccurs { get; set; }
-        public string Valid { get; set; }
+        public bool? Valid { get; set; }
         public int? EventQualityVoteCount { get; set; }
-        public string Occurred { get; set; }
-        public string Active { get; set; }
+        public bool? Occurred { get; set; }
+        public bool? Active { get; set; }
         public DateTime? CreationDate { get; set; }
 
         public NosterDto NosterDto { get; set; }

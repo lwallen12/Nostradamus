@@ -104,7 +104,7 @@ namespace Nostradamus.Controllers
             return tokenDecode;
         }
 
-        [HttpGet("getevent/{id}")]
+        [HttpGet("{id}")]
         public async Task<GenericEventDto> GetGenericEvent(int id)
         {
             //return await _unitofWork.GenericEvent.FindById(id);
@@ -122,39 +122,57 @@ namespace Nostradamus.Controllers
             return genericEventDto;
         }
 
-        [HttpPost("moretokenz")]
+        [HttpGet("genericevents")]
+        public async Task<IEnumerable<GenericEventDto>> GetGenericEvents()
+        {
+            return await _unitofWork.GenericEvent.FindAllWithIncludes();
+        }
+
+        //[HttpPost("moretokenz")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //public async Task<GenericEventDto> PostEvent([FromBody] GenericEvent genericEvent)
+        //{
+        //    var token = await HttpContext.GetTokenAsync("access_token");
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+
+        //    var subject = tokenDecode.Subject;
+
+        //    var noster = _unitofWork.Noster.GetForToken(subject);
+
+        //    genericEvent.NosterId = noster.Id;
+        //    genericEvent.CreationDate = DateTime.Now;
+        //    genericEvent.DateOccurs = "December 2020";
+        //    await _unitofWork.GenericEvent.Create(genericEvent);
+
+        //    //GetGenericPrediction
+
+        //    var config = new MapperConfiguration(cfg => {
+        //        cfg.CreateMap<GenericEvent, GenericEventDto>();
+        //    });
+        //    IMapper iMapper = config.CreateMapper();
+
+        //    GenericEventDto dto = new GenericEventDto();
+        //    var genericEventDto = iMapper.Map(genericEvent, dto);
+
+        //    return  genericEventDto;
+        //}
+
+        [HttpPost("lesstokenz")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<GenericEventDto> PostEvent([FromBody] GenericEvent genericEvent)
+        public async Task<GenericEventDto> PostThisEvent([FromBody] GenericEvent genericEvent)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
-
-
             var handler = new JwtSecurityTokenHandler();
-
             var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
 
             var subject = tokenDecode.Subject;
 
             var noster = _unitofWork.Noster.GetForToken(subject);
-
             genericEvent.NosterId = noster.Id;
-            genericEvent.CreationDate = DateTime.Now;
-            genericEvent.DateOccurs = "December 2020";
 
-            await _unitofWork.GenericEvent.Create(genericEvent);
 
-            //GetGenericPrediction
-
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<GenericEvent, GenericEventDto>();
-            });
-            IMapper iMapper = config.CreateMapper();
-
-            GenericEventDto dto = new GenericEventDto();
-            var genericEventDto = iMapper.Map(genericEvent, dto);
-
-            return  genericEventDto;
-
+            return await _unitofWork.GenericEvent.Create(genericEvent);
         }
     }
 }

@@ -38,7 +38,6 @@ namespace Nostradamus.Repository
 
             var NosterDtoList = Noster.Select(n => new NosterDto
             {
-                Id = n.Id,
                 UserName = n.UserName,
                 Email = n.Email,
                 PhoneNumber = n.PhoneNumber,

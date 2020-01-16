@@ -7,7 +7,6 @@ namespace Nostradamus.DTOs
 {
     public class NosterScoreDto
     {
-        public string NosterId { get; set; }
         public string UserName { get; set; }
         public int? RunningTotal { get; set; }
         public int? GenericPredictionTotal { get; set; }

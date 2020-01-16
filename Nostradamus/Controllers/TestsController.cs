@@ -20,6 +20,14 @@ namespace Nostradamus.Controllers
             _context = nostradamusContext;
         }
 
+        [HttpGet("getdate")]
+        public long GetDate()
+        {
+           DateTime dt = DateTime.Now.AddDays(Convert.ToDouble(30));
+
+            return dt.Ticks;
+        }
+
         [HttpGet]
         public IEnumerable<Noster> Get()
         {
@@ -54,7 +62,6 @@ namespace Nostradamus.Controllers
 
             var NosterDtoList = Noster.Select(n => new NosterDto
             {
-                Id = n.Id,
                 UserName = n.UserName,
                 Email = n.Email,
                 PhoneNumber = n.PhoneNumber,
