@@ -13,6 +13,8 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+
 
 namespace Nostradamus.Controllers
 {
@@ -108,9 +110,19 @@ namespace Nostradamus.Controllers
         [HttpGet("Protected")]
         public string Protected()
         {
-            return "Protected area";
+            return GenerateRefreshToken();
         }
 
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
 
 
 
