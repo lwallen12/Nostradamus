@@ -14,7 +14,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-
+using Nostradamus.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Nostradamus.DTOs;
 
 namespace Nostradamus.Controllers
 {
@@ -23,14 +25,17 @@ namespace Nostradamus.Controllers
     {
         private readonly SignInManager<Noster> _signInManager;
         private readonly UserManager<Noster> _userManager;
+        private readonly IUnitofWork _unitofWork;
 
         public AccountsController(
             UserManager<Noster> userManager,
-            SignInManager<Noster> signInManager
+            SignInManager<Noster> signInManager,
+            IUnitofWork unitofWork
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _unitofWork = unitofWork;
         }
 
         [HttpGet]
@@ -44,13 +49,97 @@ namespace Nostradamus.Controllers
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
 
+            
+
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+
                 return await GenerateJwtToken(model.Email, appUser);
             }
 
+            throw new ApplicationException("Problem with Username or password. Resetting may not be set up yet! :(");
+        }
+
+        [HttpPost("LoginvTwo")]
+        public async Task<object> LoginvTwo([FromBody] LoginDto model)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+
+
+
+            if (result.Succeeded)
+            {
+                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+
+                //update this appUser so that RefreshToken is new and that RefreshExpiration is new
+                appUser.RefreshToken = GenerateRefreshToken();
+                appUser.RefreshExpiration = DateTime.Now.AddDays(1);
+
+                await _unitofWork.Noster.Update(appUser);
+
+                var accessToken = await GenerateJwtToken(model.Email, appUser);
+
+                TokenPackageDTO tokenPackageDTO = new TokenPackageDTO();
+
+                tokenPackageDTO.AccessToken = (string)accessToken;
+                tokenPackageDTO.RefreshExpiration = appUser.RefreshExpiration;
+                tokenPackageDTO.RefreshToken = appUser.RefreshToken;
+
+                return tokenPackageDTO; 
+            }
+
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+        }
+
+        [HttpPost("Refresh")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<object> Refresh()
+        {
+            //var handler = new JwtSecurityTokenHandler();
+            //var accessToken = Request.Headers["Authorization"];
+            //var tokenDecode = handler.ReadToken(accessToken) as JwtSecurityToken;
+
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+
+            var subject = tokenDecode.Subject;
+
+            var user = _userManager.Users.SingleOrDefault(r => r.Email == subject);
+
+            if (user == null)
+            {
+                throw new ApplicationException("User does not exist");
+            }
+
+            var newAccessToken = GenerateJwtToken(subject, user);
+
+            return  await newAccessToken;
+
+            //This is if the token is going to come from the req body
+        }
+
+
+        [HttpPost("Refresh/header")]
+        public async Task<string> RefreshHeader()
+        {
+            //token here will be null if token is invalid
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+
+            var subject = tokenDecode.Subject;
+
+            return subject;
+
+            //var accessToken = Request.Headers["Authorization"];
+
+            //return accessToken;
+
+            //This is if the token is going to come from the req header... for some reason only works when a valid access token
         }
 
         [HttpPost("register")]
@@ -60,7 +149,9 @@ namespace Nostradamus.Controllers
             {
                 UserName = model.Email,
                 Email = model.Email,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                RefreshToken = GenerateRefreshToken(),
+                RefreshExpiration = DateTime.Now.AddDays(1)
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -93,7 +184,7 @@ namespace Nostradamus.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SOME_RANDOM_KEY_DO_NOT_SHARE"));
             var creds =  new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             //var expires = DateTime.Now.AddDays(Convert.ToDouble(30));
-            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(15));
+            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(30));
 
             var token = new JwtSecurityToken(
                 "https://localhost:57096",
@@ -108,9 +199,11 @@ namespace Nostradamus.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("Protected")]
-        public string Protected()
+        public async Task<IEnumerable<NosterDto>> Protected()
         {
-            return GenerateRefreshToken();
+
+            return await _unitofWork.Noster.FindAllWithIncludes();
+                
         }
 
 
@@ -124,6 +217,12 @@ namespace Nostradamus.Controllers
             }
         }
 
+        public class TokenPackageDTO
+        {
+            public string AccessToken { get; set; }
+            public DateTime? RefreshExpiration { get; set; }
+            public string RefreshToken { get; set; }
+        }
 
 
         public class LoginDto

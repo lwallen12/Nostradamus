@@ -16,7 +16,8 @@ namespace Nostradamus.Models
         }
 
         public DateTime? CreationDate { get; set; }
-
+        public string RefreshToken { get; set; }
+        public DateTime? RefreshExpiration { get; set; }
 
         public NosterScore NosterScore { get; set; }
         public ICollection<GenericEvent> GenericEvents { get; set; }

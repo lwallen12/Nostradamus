@@ -14,7 +14,8 @@ namespace Nostradamus
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Noster>().ToTable("Noster");
+            builder.Entity<Noster>().ToTable("Noster");           
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -26,5 +27,7 @@ namespace Nostradamus
         public DbSet<NosterScore> NosterScore { get; set; }
         public DbSet<Noster> Noster { get; set; }
         public DbSet<GenericPrediction> GenericPrediction { get; set; }
+        public DbSet<PresidentialPrediction> PresidentialPrediction { get; set; }
+
     }
 }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200201154726_PresidentialPrediction")]
+    partial class PresidentialPrediction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,219 +272,113 @@ namespace Nostradamus.Migrations
 
                     b.Property<string>("AKVote");
 
-                    b.Property<double?>("AKVoteScore");
-
                     b.Property<string>("ALVote");
-
-                    b.Property<double?>("ALVoteScore");
 
                     b.Property<string>("ARVote");
 
-                    b.Property<double?>("ARVoteScore");
-
                     b.Property<string>("AZVote");
-
-                    b.Property<double?>("AZVoteScore");
 
                     b.Property<bool>("Active");
 
                     b.Property<string>("CAVote");
 
-                    b.Property<double?>("CAVoteScore");
-
                     b.Property<string>("COVote");
 
-                    b.Property<double?>("COVoteScore");
-
                     b.Property<string>("CTVote");
-
-                    b.Property<double?>("CTVoteScore");
 
                     b.Property<string>("Candidate1");
 
                     b.Property<int>("Candidate1FaithlessElectors");
 
-                    b.Property<double?>("Candidate1FaithlessElectorsScore");
-
                     b.Property<string>("Candidate1Party");
 
-                    b.Property<double?>("Candidate1PartyScore");
-
-                    b.Property<double?>("Candidate1Score");
-
                     b.Property<string>("Candidate1VP");
-
-                    b.Property<double?>("Candidate1VPScore");
 
                     b.Property<string>("Candidate2");
 
                     b.Property<int>("Candidate2FaithlessElectors");
 
-                    b.Property<double?>("Candidate2FaithlessElectorsScore");
-
                     b.Property<string>("Candidate2Party");
-
-                    b.Property<double?>("Candidate2PartyScore");
-
-                    b.Property<double?>("Candidate2Score");
 
                     b.Property<string>("Candidate2VP");
 
-                    b.Property<double?>("Candidate2VPScore");
-
                     b.Property<string>("DEVote");
-
-                    b.Property<double?>("DEVoteScore");
 
                     b.Property<string>("Description");
 
                     b.Property<string>("ElectionWinner");
 
-                    b.Property<double?>("ElectionWinnerScore");
-
                     b.Property<string>("ElectoralVoteWinner");
-
-                    b.Property<double?>("ElectoralVoteWinnerScore");
 
                     b.Property<string>("FLVote");
 
-                    b.Property<double?>("FLVoteScore");
-
                     b.Property<string>("GAVote");
-
-                    b.Property<double?>("GAVoteScore");
 
                     b.Property<string>("HIVote");
 
-                    b.Property<double?>("HIVoteScore");
-
                     b.Property<string>("IAVote");
-
-                    b.Property<double?>("IAVoteScore");
 
                     b.Property<string>("IDVote");
 
-                    b.Property<double?>("IDVoteScore");
-
                     b.Property<string>("ILVote");
-
-                    b.Property<double?>("ILVoteScore");
 
                     b.Property<string>("INVote");
 
-                    b.Property<double?>("INVoteScore");
-
                     b.Property<string>("KSVote");
-
-                    b.Property<double?>("KSVoteScore");
 
                     b.Property<string>("KYVote");
 
-                    b.Property<double?>("KYVoteScore");
-
                     b.Property<string>("LAVote");
-
-                    b.Property<double?>("LAVoteScore");
 
                     b.Property<string>("MAVote");
 
-                    b.Property<double?>("MAVoteScore");
-
                     b.Property<string>("MDVote");
-
-                    b.Property<double?>("MDVoteScore");
 
                     b.Property<string>("MEVote");
 
-                    b.Property<double?>("MEVoteScore");
-
                     b.Property<string>("MIVote");
-
-                    b.Property<double?>("MIVoteScore");
 
                     b.Property<string>("MNVote");
 
-                    b.Property<double?>("MNVoteScore");
-
                     b.Property<string>("MOVote");
-
-                    b.Property<double?>("MOVoteScore");
 
                     b.Property<string>("MSVote");
 
-                    b.Property<double?>("MSVoteScore");
-
                     b.Property<string>("MTVote");
-
-                    b.Property<double?>("MTVoteScore");
 
                     b.Property<string>("NCVote");
 
-                    b.Property<double?>("NCVoteScore");
-
                     b.Property<string>("NDVote");
-
-                    b.Property<double?>("NDVoteScore");
 
                     b.Property<string>("NEVote");
 
-                    b.Property<double?>("NEVoteScore");
-
                     b.Property<string>("NHVote");
-
-                    b.Property<double?>("NHVoteScore");
 
                     b.Property<string>("NJVote");
 
-                    b.Property<double?>("NJVoteScore");
-
                     b.Property<string>("NMVote");
-
-                    b.Property<double?>("NMVoteScore");
 
                     b.Property<string>("NVVote");
 
-                    b.Property<double?>("NVVoteScore");
-
                     b.Property<string>("NYVote");
-
-                    b.Property<double?>("NYVoteScore");
 
                     b.Property<string>("NosterId");
 
                     b.Property<string>("OHVote");
 
-                    b.Property<double?>("OHVoteScore");
-
                     b.Property<string>("OKVote");
-
-                    b.Property<double?>("OKVoteScore");
 
                     b.Property<string>("ORVote");
 
-                    b.Property<double?>("ORVoteScore");
-
                     b.Property<string>("PAVote");
-
-                    b.Property<double?>("PAVoteScore");
 
                     b.Property<string>("PopularVoteWinner");
 
-                    b.Property<double?>("PopularVoteWinnerScore");
-
                     b.Property<string>("RIVote");
-
-                    b.Property<double?>("RIVoteScore");
 
                     b.Property<string>("SCVote");
 
-                    b.Property<double?>("SCVoteScore");
-
                     b.Property<string>("SDVote");
-
-                    b.Property<double?>("SDVoteScore");
-
-                    b.Property<double?>("ScoreTotal");
 
                     b.Property<bool>("Scored");
 
@@ -492,41 +388,23 @@ namespace Nostradamus.Migrations
 
                     b.Property<string>("TNVote");
 
-                    b.Property<double?>("TNVoteScore");
-
                     b.Property<string>("TXVote");
-
-                    b.Property<double?>("TXVoteScore");
 
                     b.Property<string>("UTVote");
 
-                    b.Property<double?>("UTVoteScore");
-
                     b.Property<string>("VAVote");
 
-                    b.Property<double?>("VAVoteScore");
-
                     b.Property<string>("VTVote");
-
-                    b.Property<double?>("VTVoteScore");
 
                     b.Property<bool>("Valid");
 
                     b.Property<string>("WAVote");
 
-                    b.Property<double?>("WAVoteScore");
-
                     b.Property<string>("WIVote");
-
-                    b.Property<double?>("WIVoteScore");
 
                     b.Property<string>("WVVote");
 
-                    b.Property<double?>("WVVoteScore");
-
                     b.Property<string>("WYVote");
-
-                    b.Property<double?>("WYVoteScore");
 
                     b.Property<string>("Why");
 
@@ -535,6 +413,140 @@ namespace Nostradamus.Migrations
                     b.HasIndex("NosterId");
 
                     b.ToTable("PresidentialPrediction");
+                });
+
+            modelBuilder.Entity("Nostradamus.Models.PresidentialPredictionScore", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double?>("AKVoteScore");
+
+                    b.Property<double?>("ALVoteScore");
+
+                    b.Property<double?>("ARVoteScore");
+
+                    b.Property<double?>("AZVoteScore");
+
+                    b.Property<double?>("CAVoteScore");
+
+                    b.Property<double?>("COVoteScore");
+
+                    b.Property<double?>("CTVoteScore");
+
+                    b.Property<double?>("Candidate1FaithlessElectorsScore");
+
+                    b.Property<double?>("Candidate1PartyScore");
+
+                    b.Property<double?>("Candidate1Score");
+
+                    b.Property<double?>("Candidate1VPScore");
+
+                    b.Property<double?>("Candidate2FaithlessElectorsScore");
+
+                    b.Property<double?>("Candidate2PartyScore");
+
+                    b.Property<double?>("Candidate2Score");
+
+                    b.Property<double?>("Candidate2VPScore");
+
+                    b.Property<double?>("DEVoteScore");
+
+                    b.Property<double?>("ElectionWinnerScore");
+
+                    b.Property<double?>("ElectoralVoteWinnerScore");
+
+                    b.Property<double?>("FLVoteScore");
+
+                    b.Property<double?>("GAVoteScore");
+
+                    b.Property<double?>("HIVoteScore");
+
+                    b.Property<double?>("IAVoteScore");
+
+                    b.Property<double?>("IDVoteScore");
+
+                    b.Property<double?>("ILVoteScore");
+
+                    b.Property<double?>("INVoteScore");
+
+                    b.Property<double?>("KSVoteScore");
+
+                    b.Property<double?>("KYVoteScore");
+
+                    b.Property<double?>("LAVoteScore");
+
+                    b.Property<double?>("MAVoteScore");
+
+                    b.Property<double?>("MDVoteScore");
+
+                    b.Property<double?>("MEVoteScore");
+
+                    b.Property<double?>("MIVoteScore");
+
+                    b.Property<double?>("MNVoteScore");
+
+                    b.Property<double?>("MOVoteScore");
+
+                    b.Property<double?>("MSVoteScore");
+
+                    b.Property<double?>("MTVoteScore");
+
+                    b.Property<double?>("NCVoteScore");
+
+                    b.Property<double?>("NDVoteScore");
+
+                    b.Property<double?>("NEVoteScore");
+
+                    b.Property<double?>("NHVoteScore");
+
+                    b.Property<double?>("NJVoteScore");
+
+                    b.Property<double?>("NMVoteScore");
+
+                    b.Property<double?>("NVVoteScore");
+
+                    b.Property<double?>("NYVoteScore");
+
+                    b.Property<double?>("OHVoteScore");
+
+                    b.Property<double?>("OKVoteScore");
+
+                    b.Property<double?>("ORVoteScore");
+
+                    b.Property<double?>("PAVoteScore");
+
+                    b.Property<double?>("PopularVoteWinnerScore");
+
+                    b.Property<double?>("RIVoteScore");
+
+                    b.Property<double?>("SCVoteScore");
+
+                    b.Property<double?>("SDVoteScore");
+
+                    b.Property<double?>("ScoreTotal");
+
+                    b.Property<double?>("TNVoteScore");
+
+                    b.Property<double?>("TXVoteScore");
+
+                    b.Property<double?>("UTVoteScore");
+
+                    b.Property<double?>("VAVoteScore");
+
+                    b.Property<double?>("VTVoteScore");
+
+                    b.Property<double?>("WAVoteScore");
+
+                    b.Property<double?>("WIVoteScore");
+
+                    b.Property<double?>("WVVoteScore");
+
+                    b.Property<double?>("WYVoteScore");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PresidentialPredictionScore");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -610,6 +622,11 @@ namespace Nostradamus.Migrations
 
             modelBuilder.Entity("Nostradamus.Models.PresidentialPrediction", b =>
                 {
+                    b.HasOne("Nostradamus.Models.PresidentialPredictionScore", "PresidientialPredictionScore")
+                        .WithOne("PresidentialPrediction")
+                        .HasForeignKey("Nostradamus.Models.PresidentialPrediction", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Nostradamus.Models.Noster", "Noster")
                         .WithMany()
                         .HasForeignKey("NosterId");
