@@ -28,6 +28,7 @@ namespace Nostradamus.Repository
             return this._nostradamusContext.Set<T>().Where(expression).AsNoTracking();
         }
 
+        
         public async Task<T> FindById(string id)
         {
             return await this._nostradamusContext.Set<T>().FindAsync(id);
