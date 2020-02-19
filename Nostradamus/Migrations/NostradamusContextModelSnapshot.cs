@@ -330,6 +330,8 @@ namespace Nostradamus.Migrations
 
                     b.Property<double?>("Candidate2VPScore");
 
+                    b.Property<string>("CreatedBy");
+
                     b.Property<string>("DEVote");
 
                     b.Property<double?>("DEVoteScore");

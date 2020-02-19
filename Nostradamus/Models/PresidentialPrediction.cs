@@ -12,6 +12,8 @@ namespace Nostradamus.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public string CreatedBy { get; set; }
+        public string NosterId { get; set; }
         public string Candidate1 { get; set; }
         public string Candidate1Party { get; set; }
         public string Candidate1VP { get; set; }

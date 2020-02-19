@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20200201154334_PresidentialPrediction.Designer.cs" />
     <Compile Remove="Migrations\20200201154658_PresidentialPrediction.cs" />
     <Compile Remove="Migrations\20200201154658_PresidentialPrediction.Designer.cs" />
+    <Compile Remove="Migrations\20200219022929_AddNosterIdPresidentialEntity.cs" />
+    <Compile Remove="Migrations\20200219022929_AddNosterIdPresidentialEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200219023117_AddPresidentialPrediction.cs" />
+    <Compile Remove="Migrations\20200219023117_AddPresidentialPrediction.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
