@@ -176,9 +176,15 @@ namespace Nostradamus.Controllers
         }
 
         [HttpGet("Allprez")]
-        public async Task<IEnumerable<PresidentialPrediction>> GetPresidentialPredictions()
+        public async Task<IEnumerable<PresidentialPredictionFormDto>> GetPresidentialPredictions()
         {
             return await _unitofWork.PresidentialPrediction.FindAllWithIncludes();
+        }
+
+        [HttpGet("firstprez/{id}")]
+        public async Task<PresidentialPredictionFormDto> FindById(int id)
+        {
+            return await _unitofWork.PresidentialPrediction.FindByIdWithIncludes(id);
         }
     }
 }

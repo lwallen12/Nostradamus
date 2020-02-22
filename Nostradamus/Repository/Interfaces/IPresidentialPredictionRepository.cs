@@ -1,4 +1,5 @@
-﻿using Nostradamus.Models;
+﻿using Nostradamus.DTOs;
+using Nostradamus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace Nostradamus.Repository.Interfaces
 {
     public interface IPresidentialPredictionRepository : IRepositoryBase<PresidentialPrediction>
     {
-        Task<IEnumerable<PresidentialPrediction>> FindAllWithIncludes();
+        Task<IEnumerable<PresidentialPredictionFormDto>> FindAllWithIncludes();
+
+        Task<PresidentialPredictionFormDto> FindByIdWithIncludes(int id);
     }
 }
