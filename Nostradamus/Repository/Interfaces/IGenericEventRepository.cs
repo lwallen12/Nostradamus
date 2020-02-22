@@ -12,6 +12,6 @@ namespace Nostradamus.Repository.Interfaces
     {
         Task<IEnumerable<GenericEventDto>> FindAllWithIncludes();
 
-        Task<GenericEventDto> Create(GenericEvent genericEvent);
+        new Task<GenericEventDto>  Create(GenericEvent genericEvent);
     }
 }

@@ -16,6 +16,7 @@ namespace Nostradamus.Repository
         private IGenericPredictionRepository _genericPredictionRepository;
         private INosterRepository _nosterRepository;
         private INosterScoreRepository _nosterScoreRepository;
+        private IPresidentialPredictionRepository _presidentialPredictionRepository;
 
         public UnitofWork (NostradamusContext nostradamusContext)
         {
@@ -71,6 +72,19 @@ namespace Nostradamus.Repository
                 }
 
                 return _nosterScoreRepository;
+            }
+        }
+
+        public IPresidentialPredictionRepository PresidentialPrediction
+        {
+            get
+            {
+                if (_presidentialPredictionRepository == null)
+                {
+                    _presidentialPredictionRepository = new PresidentialPredictionRepository(_nostradamusContext);
+                }
+
+                return _presidentialPredictionRepository;
             }
         }
 

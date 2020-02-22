@@ -18,7 +18,7 @@ namespace Nostradamus.Controllers
 
         public PresidentialPredictionsController(NostradamusContext context)
         {
-            _context = context;
+            _context = context; 
         }
 
         // GET: api/PresidentialPredictions

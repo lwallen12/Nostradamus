@@ -12,6 +12,8 @@ namespace Nostradamus.Repository.Interfaces
         INosterRepository Noster { get; }
         INosterScoreRepository NosterScore { get; }
 
+        IPresidentialPredictionRepository PresidentialPrediction { get; }
+
         Task Save();
     }
 }
