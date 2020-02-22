@@ -12,5 +12,13 @@ namespace Nostradamus.Repository.Interfaces
         Task<IEnumerable<PresidentialPredictionFormDto>> FindAllWithIncludes();
 
         Task<PresidentialPredictionFormDto> FindByIdWithIncludes(int id);
+
+        Task<PresidentialPrediction> FindActivePrediction(string currentNoster);
+
+        Task MarkDelete(PresidentialPrediction presidentialPrediction);
+
+        Task MarkUpdate(PresidentialPrediction presidentialPrediction);
+
+        PresidentialPredictionFormDto MapPresidentialPrediction(PresidentialPrediction presPrediction);
     }
 }

@@ -57,7 +57,7 @@ namespace Nostradamus.Repository
         {
             var currentActive = this._nostradamusContext.PresidentialPrediction
                 .Where(pp => pp.Active == true)
-                .Where(pp => pp.CreatedBy == currentNoster).FirstAsync();
+                .Where(pp => pp.CreatedBy == currentNoster).FirstOrDefaultAsync();
 
             return await currentActive;
         }
@@ -75,81 +75,7 @@ namespace Nostradamus.Repository
             });
             IMapper iMapper = config.CreateMapper();
 
-            var presidentialPredictionFormDto = new PresidentialPredictionFormDto
-            {
-                Id = presPrediction.Id,
-                CreatedBy = presPrediction.CreatedBy,
-                Candidate1 = presPrediction.Candidate1,
-                Candidate1Party = presPrediction.Candidate1Party,
-                Candidate1VP = presPrediction.Candidate1VP,
-                Candidate1FaithlessElectors = presPrediction.Candidate1FaithlessElectors,
-                Candidate2 = presPrediction.Candidate2,
-                Candidate2Party = presPrediction.Candidate2Party,
-                Candidate2VP = presPrediction.Candidate2VP,
-                Candidate2FaithlessElectors = presPrediction.Candidate2FaithlessElectors,
-                PopularVoteWinner = presPrediction.PopularVoteWinner,
-                ElectoralVoteWinner = presPrediction.ElectoralVoteWinner,
-                ElectionWinner = presPrediction.ElectionWinner,
-                Description = presPrediction.Description,
-                Why = presPrediction.Why,
-                SnapStartDate = presPrediction.SnapStartDate,
-                SnapEndDate = presPrediction.SnapEndDate,
-                Scored = presPrediction.Scored,
-                Active = presPrediction.Active,
-                Valid = presPrediction.Valid,
-                ALVote = presPrediction.ALVote,
-                AKVote = presPrediction.AKVote,
-                AZVote = presPrediction.AZVote,
-                ARVote = presPrediction.ARVote,
-                CAVote = presPrediction.CAVote,
-                COVote = presPrediction.COVote,
-                CTVote = presPrediction.CTVote,
-                DEVote = presPrediction.DEVote,
-                FLVote = presPrediction.FLVote,
-                GAVote = presPrediction.GAVote,
-                HIVote = presPrediction.HIVote,
-                IDVote = presPrediction.IDVote,
-                ILVote = presPrediction.ILVote,
-                INVote = presPrediction.INVote,
-                IAVote = presPrediction.IAVote,
-                KSVote = presPrediction.KSVote,
-                KYVote = presPrediction.KYVote,
-                LAVote = presPrediction.LAVote,
-                MEVote = presPrediction.MEVote,
-                MDVote = presPrediction.MDVote,
-                MAVote = presPrediction.MAVote,
-                MIVote = presPrediction.MIVote,
-                MNVote = presPrediction.MNVote,
-                MSVote = presPrediction.MSVote,
-                MOVote = presPrediction.MOVote,
-                MTVote = presPrediction.MTVote,
-                NEVote = presPrediction.NEVote,
-                NVVote = presPrediction.NVVote,
-                NHVote = presPrediction.NHVote,
-                NJVote = presPrediction.NJVote,
-                NMVote = presPrediction.NMVote,
-                NYVote = presPrediction.NYVote,
-                NCVote = presPrediction.NCVote,
-                NDVote = presPrediction.NDVote,
-                OHVote = presPrediction.OHVote,
-                OKVote = presPrediction.OKVote,
-                ORVote = presPrediction.ORVote,
-                PAVote = presPrediction.PAVote,
-                RIVote = presPrediction.RIVote,
-                SCVote = presPrediction.SCVote,
-                SDVote = presPrediction.SDVote,
-                TNVote = presPrediction.TNVote,
-                TXVote = presPrediction.TXVote,
-                UTVote = presPrediction.UTVote,
-                VTVote = presPrediction.VTVote,
-                VAVote = presPrediction.VAVote,
-                WAVote = presPrediction.WAVote,
-                WVVote = presPrediction.WVVote,
-                WIVote = presPrediction.WIVote,
-                WYVote = presPrediction.WYVote,
-
-                NosterDto = iMapper.Map(presPrediction.Noster, nosterDto)
-            };
+            var presidentialPredictionFormDto = MapPresidentialPrediction(presPrediction);
 
             return presidentialPredictionFormDto;
         }
@@ -243,6 +169,96 @@ namespace Nostradamus.Repository
             });
 
             return presidentialPredictionFormDtoList;
+        }
+
+
+        public PresidentialPredictionFormDto MapPresidentialPrediction(PresidentialPrediction presPrediction)
+        {
+            NosterDto nosterDto = new NosterDto();
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Noster, NosterDto>();
+            });
+            IMapper iMapper = config.CreateMapper();
+
+            var presidentialPredictionFormDto = new PresidentialPredictionFormDto
+            {
+                Id = presPrediction.Id,
+                CreatedBy = presPrediction.CreatedBy,
+                Candidate1 = presPrediction.Candidate1,
+                Candidate1Party = presPrediction.Candidate1Party,
+                Candidate1VP = presPrediction.Candidate1VP,
+                Candidate1FaithlessElectors = presPrediction.Candidate1FaithlessElectors,
+                Candidate2 = presPrediction.Candidate2,
+                Candidate2Party = presPrediction.Candidate2Party,
+                Candidate2VP = presPrediction.Candidate2VP,
+                Candidate2FaithlessElectors = presPrediction.Candidate2FaithlessElectors,
+                PopularVoteWinner = presPrediction.PopularVoteWinner,
+                ElectoralVoteWinner = presPrediction.ElectoralVoteWinner,
+                ElectionWinner = presPrediction.ElectionWinner,
+                Description = presPrediction.Description,
+                Why = presPrediction.Why,
+                SnapStartDate = presPrediction.SnapStartDate,
+                SnapEndDate = presPrediction.SnapEndDate,
+                Scored = presPrediction.Scored,
+                Active = presPrediction.Active,
+                Valid = presPrediction.Valid,
+                ALVote = presPrediction.ALVote,
+                AKVote = presPrediction.AKVote,
+                AZVote = presPrediction.AZVote,
+                ARVote = presPrediction.ARVote,
+                CAVote = presPrediction.CAVote,
+                COVote = presPrediction.COVote,
+                CTVote = presPrediction.CTVote,
+                DEVote = presPrediction.DEVote,
+                FLVote = presPrediction.FLVote,
+                GAVote = presPrediction.GAVote,
+                HIVote = presPrediction.HIVote,
+                IDVote = presPrediction.IDVote,
+                ILVote = presPrediction.ILVote,
+                INVote = presPrediction.INVote,
+                IAVote = presPrediction.IAVote,
+                KSVote = presPrediction.KSVote,
+                KYVote = presPrediction.KYVote,
+                LAVote = presPrediction.LAVote,
+                MEVote = presPrediction.MEVote,
+                MDVote = presPrediction.MDVote,
+                MAVote = presPrediction.MAVote,
+                MIVote = presPrediction.MIVote,
+                MNVote = presPrediction.MNVote,
+                MSVote = presPrediction.MSVote,
+                MOVote = presPrediction.MOVote,
+                MTVote = presPrediction.MTVote,
+                NEVote = presPrediction.NEVote,
+                NVVote = presPrediction.NVVote,
+                NHVote = presPrediction.NHVote,
+                NJVote = presPrediction.NJVote,
+                NMVote = presPrediction.NMVote,
+                NYVote = presPrediction.NYVote,
+                NCVote = presPrediction.NCVote,
+                NDVote = presPrediction.NDVote,
+                OHVote = presPrediction.OHVote,
+                OKVote = presPrediction.OKVote,
+                ORVote = presPrediction.ORVote,
+                PAVote = presPrediction.PAVote,
+                RIVote = presPrediction.RIVote,
+                SCVote = presPrediction.SCVote,
+                SDVote = presPrediction.SDVote,
+                TNVote = presPrediction.TNVote,
+                TXVote = presPrediction.TXVote,
+                UTVote = presPrediction.UTVote,
+                VTVote = presPrediction.VTVote,
+                VAVote = presPrediction.VAVote,
+                WAVote = presPrediction.WAVote,
+                WVVote = presPrediction.WVVote,
+                WIVote = presPrediction.WIVote,
+                WYVote = presPrediction.WYVote,
+
+                NosterDto = iMapper.Map(presPrediction.Noster, nosterDto)
+            };
+
+            return presidentialPredictionFormDto;
+
         }
     }
 }

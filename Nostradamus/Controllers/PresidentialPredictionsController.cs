@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nostradamus;
+using Nostradamus.DTOs;
 using Nostradamus.Models;
+using Nostradamus.Repository.Interfaces;
 
 namespace Nostradamus.Controllers
 {
@@ -14,113 +20,77 @@ namespace Nostradamus.Controllers
     [ApiController]
     public class PresidentialPredictionsController : ControllerBase
     {
-        private readonly NostradamusContext _context;
+        private IUnitofWork _unitofWork;
 
-        public PresidentialPredictionsController(NostradamusContext context)
+        public PresidentialPredictionsController(IUnitofWork unitofWork)
         {
-            _context = context; 
+            _unitofWork = unitofWork;
         }
 
         // GET: api/PresidentialPredictions
         [HttpGet]
-        public IEnumerable<PresidentialPrediction> GetPresidentialPrediction()
+        public async Task<IEnumerable<PresidentialPredictionFormDto>> GetPresidentialPredictions()
         {
-            return _context.PresidentialPrediction;
+            return await _unitofWork.PresidentialPrediction.FindAllWithIncludes();
         }
 
         // GET: api/PresidentialPredictions/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPresidentialPrediction([FromRoute] int id)
+        public async Task<PresidentialPredictionFormDto> GetById(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var presidentialPrediction = await _context.PresidentialPrediction.FindAsync(id);
-
-            if (presidentialPrediction == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(presidentialPrediction);
-        }
-
-        // PUT: api/PresidentialPredictions/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPresidentialPrediction([FromRoute] int id, [FromBody] PresidentialPrediction presidentialPrediction)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != presidentialPrediction.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(presidentialPrediction).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PresidentialPredictionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+            return await _unitofWork.PresidentialPrediction.FindByIdWithIncludes(id);
+        } 
 
         // POST: api/PresidentialPredictions
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostPresidentialPrediction([FromBody] PresidentialPrediction presidentialPrediction)
         {
-            if (!ModelState.IsValid)
+
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+
+            var subject = tokenDecode.Subject;
+            var noster = _unitofWork.Noster.GetForToken(subject);
+
+            presidentialPrediction.NosterId = noster.Id;
+            presidentialPrediction.CreatedBy = noster.UserName;
+
+            var currentActivePred = await _unitofWork.PresidentialPrediction.FindActivePrediction(presidentialPrediction.CreatedBy);
+
+            if (currentActivePred == null)
             {
-                return BadRequest(ModelState);
+                await _unitofWork.PresidentialPrediction.Create(presidentialPrediction);
             }
 
-            _context.PresidentialPrediction.Add(presidentialPrediction);
-            await _context.SaveChangesAsync();
+            else
+            {
+                await _unitofWork.PresidentialPrediction.MarkDelete(currentActivePred);
 
-            return CreatedAtAction("GetPresidentialPrediction", new { id = presidentialPrediction.Id }, presidentialPrediction);
+                await _unitofWork.PresidentialPrediction.Create(presidentialPrediction);
+            }
+
+            var presidentialPredictionFormDto = _unitofWork.PresidentialPrediction.MapPresidentialPrediction(presidentialPrediction);
+
+            return Ok(presidentialPredictionFormDto);
         }
 
         // DELETE: api/PresidentialPredictions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePresidentialPrediction([FromRoute] int id)
+        public async Task DeletePresidentialPrediction(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var presidentialPrediction = await _unitofWork.PresidentialPrediction.FindById(id);
 
-            var presidentialPrediction = await _context.PresidentialPrediction.FindAsync(id);
-            if (presidentialPrediction == null)
-            {
-                return NotFound();
-            }
-
-            _context.PresidentialPrediction.Remove(presidentialPrediction);
-            await _context.SaveChangesAsync();
-
-            return Ok(presidentialPrediction);
+             await _unitofWork.PresidentialPrediction.MarkDelete(presidentialPrediction);
         }
 
-        private bool PresidentialPredictionExists(int id)
-        {
-            return _context.PresidentialPrediction.Any(e => e.Id == id);
+
+        //Everything BELOW THIS LINE IS FOR TESTING ONLY!!!
+        /// <summary>
+        /// /EVERYTIHING
+        /// </summary>
+
+
         }
-    }
 }

@@ -175,7 +175,7 @@ namespace Nostradamus.Controllers
             return await _unitofWork.GenericEvent.Create(genericEvent);
         }
 
-        [HttpGet("Allprez")]
+        [HttpGet("allprez")]
         public async Task<IEnumerable<PresidentialPredictionFormDto>> GetPresidentialPredictions()
         {
             return await _unitofWork.PresidentialPrediction.FindAllWithIncludes();
