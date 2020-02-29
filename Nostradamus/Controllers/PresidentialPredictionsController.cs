@@ -41,6 +41,21 @@ namespace Nostradamus.Controllers
             return await _unitofWork.PresidentialPrediction.FindByIdWithIncludes(id);
         } 
 
+        [HttpGet("active")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<PresidentialPrediction> FindMostActive()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+
+            var subject = tokenDecode.Subject;
+
+            return await this._unitofWork.PresidentialPrediction.FindActivePrediction(subject);
+
+        }
+
+
         // POST: api/PresidentialPredictions
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
