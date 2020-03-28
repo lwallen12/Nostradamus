@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +16,7 @@ using System.Security.Cryptography;
 using Nostradamus.Repository.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Nostradamus.DTOs;
+using Nostradamus.Mail;
 
 namespace Nostradamus.Controllers
 {
@@ -49,7 +49,7 @@ namespace Nostradamus.Controllers
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
 
-            
+            //TODO: Call to verify your account
 
             if (result.Succeeded)
             {
@@ -65,8 +65,6 @@ namespace Nostradamus.Controllers
         public async Task<object> LoginvTwo([FromBody] LoginDto model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-
-
 
             if (result.Succeeded)
             {
@@ -142,6 +140,31 @@ namespace Nostradamus.Controllers
             //This is if the token is going to come from the req header... for some reason only works when a valid access token
         }
 
+        [HttpPost("reset")]
+        public async Task Reset([FromBody] UserSet userSet)
+        {
+
+            
+                Noster noster = _unitofWork.Noster.GetForToken(userSet.Username);
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(noster);
+                MailHelper.sendReset("a.allenwill@gmail.com", "a.allenwill@gmail.com", resetToken);
+            //    return true;
+           
+
+
+            //TODO: probably send an email, text of the reset token to the user
+        }
+
+
+        [HttpPost("change")]
+        public async Task<IdentityResult> Change([FromBody] UserSet userSet)
+        {
+            Noster noster = _unitofWork.Noster.GetForToken(userSet.Username);
+
+            return await _userManager.ResetPasswordAsync(noster, userSet.ResetToken, userSet.NewPassword);
+
+        }
+
         [HttpPost("register")]
         public async Task<object> Register([FromBody] RegisterDto model)
         {
@@ -155,8 +178,6 @@ namespace Nostradamus.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
-
-
 
             if (result.Succeeded)
             {
@@ -245,6 +266,13 @@ namespace Nostradamus.Controllers
             public string Password { get; set; }
 
             public DateTime CreationDate { get; set; }
+        }
+
+        public class UserSet
+        {
+            public string Username { get; set; }
+            public string ResetToken { get; set; }
+            public string NewPassword { get; set; }
         }
     }
 }
