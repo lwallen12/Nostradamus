@@ -27,7 +27,7 @@ namespace Nostradamus.Mail
                       <h1>iNostradamus Password Reset (via Amazon SES)</h1>
                       <p>Use the token below to reset your password:</p> 
                             
-                      <p><b>" + resetToken + @"</b></p> 
+                      <p><b>" + resetToken + @"</b></p>     
 
                        <p> Access the page here: 
                         <a href='http://localhost:4200/auth'>iNostradmus Sign in</a> .</p>

@@ -147,8 +147,8 @@ namespace Nostradamus.Controllers
             
                 Noster noster = _unitofWork.Noster.GetForToken(userSet.Username);
                 var resetToken = await _userManager.GeneratePasswordResetTokenAsync(noster);
-                MailHelper.sendReset("a.allenwill@gmail.com", "a.allenwill@gmail.com", resetToken);
-            //    return true;
+                MailHelper.sendReset("a.allenwill@gmail.com", userSet.Username, resetToken);
+                //return resetToken;
            
 
 
