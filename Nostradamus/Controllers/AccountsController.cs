@@ -146,8 +146,13 @@ namespace Nostradamus.Controllers
 
             
                 Noster noster = _unitofWork.Noster.GetForToken(userSet.Username);
+                
+
+            if (noster != null)
+            {
                 var resetToken = await _userManager.GeneratePasswordResetTokenAsync(noster);
                 MailHelper.sendReset("a.allenwill@gmail.com", userSet.Username, resetToken);
+            }
                 //return resetToken;
            
 
@@ -182,15 +187,16 @@ namespace Nostradamus.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
+                MailHelper.sendSignUpAlert(model.Email);
                 return await GenerateJwtToken(model.Email, user);
             }
 
             else
             {
-                return result;
+                throw new ApplicationException("UNKNOWN_ERROR");
             }
 
-            //throw new ApplicationException("UNKNOWN_ERROR");
+            
         }
 
         private async Task<object> GenerateJwtToken(string email, Noster user)

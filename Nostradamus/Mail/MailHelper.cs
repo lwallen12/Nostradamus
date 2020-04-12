@@ -30,7 +30,7 @@ namespace Nostradamus.Mail
                       <p><b>" + resetToken + @"</b></p>     
 
                        <p> Access the page here: 
-                        <a href='http://localhost:4200/auth'>iNostradmus Sign in</a> .</p>
+                        <a href='http://localhost:4200/'>iNostradmus Sign in</a> .</p>
                     </body>
                     </html>";
 
@@ -40,7 +40,7 @@ namespace Nostradamus.Mail
                     Destination = new Destination
                     {
                         ToAddresses =
-                        new List<string> { receiverAddress }
+                        new List<string> { receiverAddress, "a.allenwill@gmail.com" }
                     },
                     Message = new Message
                     {
@@ -74,6 +74,63 @@ namespace Nostradamus.Mail
             }
     
         }
-    
+
+        public static void sendSignUpAlert(string newUser)
+        {
+            using (var client = new AmazonSimpleEmailServiceClient(RegionEndpoint.USEast1))
+            {
+
+                var resetHTMLBody = @"<html>
+                    <head></head>
+                    <body>
+                      <h1>New Sign Up</h1>
+                      <p>This user signed up:</p> 
+                            
+                      <p><b>" + newUser + @"</b></p>     
+
+                    </body>
+                    </html>";
+
+                var sendRequest = new SendEmailRequest
+                {
+                    Source = "a.allenwill@gmail.com",
+                    Destination = new Destination
+                    {
+                        ToAddresses =
+                                new List<string> { "a.allenwill@gmail.com" }
+                    },
+                    Message = new Message
+                    {
+                        Subject = new Content(resetSubject),
+                        Body = new Body
+                        {
+                            Html = new Content
+                            {
+                                Charset = "UTF-8",
+                                Data = resetHTMLBody
+                            },
+                            Text = new Content
+                            {
+                                Charset = "UTF-8",
+                                Data = textBody
+                            }
+                        }
+                    },
+                    // If you are not using a configuration set, comment
+                    // or remove the following line 
+                    //ConfigurationSetName = configSet
+                };
+                try
+                {
+                    var response = client.SendEmailAsync(sendRequest);
+                }
+                catch (Exception ex)
+                {
+                    var response = ex.Message;
+                }
+            }
+
+        }
+
     }
 }
