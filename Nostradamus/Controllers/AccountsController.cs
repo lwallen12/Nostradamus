@@ -211,7 +211,7 @@ namespace Nostradamus.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SOME_RANDOM_KEY_DO_NOT_SHARE"));
             var creds =  new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             //var expires = DateTime.Now.AddDays(Convert.ToDouble(30));
-            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(15));
+            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(60));
 
             var token = new JwtSecurityToken(
                 "https://localhost:57096",
