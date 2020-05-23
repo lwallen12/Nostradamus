@@ -20,7 +20,7 @@ namespace Nostradamus.DTOs
         public bool TwoFactorEnabled { get; set; }
         public DateTime? CreationDate { get; set; }
 
-        public NosterScoreDto NosterScoreDto { get; set; }
+        //public NosterScoreDto NosterScoreDto { get; set; }
         public ICollection<GenericEventDto> GenericEventDtos { get; set; }
         public ICollection<GenericPredictionDto> GenericPredictionDtos { get; set; }
 

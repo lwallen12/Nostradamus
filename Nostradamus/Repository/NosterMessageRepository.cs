@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Nostradamus.Repository
 {
-    public class NosterScoreRepository : RepositoryBase<NosterScore>, INosterScoreRepository
+    public class NosterMessageRepository: RepositoryBase<NosterMessage>, INosterMessageRepository
     {
-        public NosterScoreRepository(NostradamusContext nostradamusContext)
+        public NosterMessageRepository(NostradamusContext nostradamusContext)
             : base(nostradamusContext)
         {
         }

@@ -10,9 +10,11 @@ namespace Nostradamus.Repository.Interfaces
         IGenericEventRepository GenericEvent { get; }
         IGenericPredictionRepository GenericPrediction { get; }
         INosterRepository Noster { get; }
-        INosterScoreRepository NosterScore { get; }
+        //INosterScoreRepository NosterScore { get; }
 
         IPresidentialPredictionRepository PresidentialPrediction { get; }
+        INosterMessageRepository NosterMessage { get; }
+       
 
         Task Save();
     }

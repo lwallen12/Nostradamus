@@ -14,8 +14,21 @@ namespace Nostradamus
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Noster>().ToTable("Noster");           
+            builder.Entity<Noster>().ToTable("Noster");
 
+            builder.Entity<NosterRelation>().HasKey(table => new
+            {
+                table.NosterId,
+                table.RelatedNosterId,
+                table.RelationType
+            });
+
+            builder.Entity<NosterMessage>().HasKey(table => new
+            {
+                table.NosterId,
+                table.MessageSource,
+                table.OriginTime
+            });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,10 +37,12 @@ namespace Nostradamus
         }
 
         public DbSet<GenericEvent> GenericEvent { get; set; }
-        public DbSet<NosterScore> NosterScore { get; set; }
+        //public DbSet<NosterScore> NosterScore { get; set; }
         public DbSet<Noster> Noster { get; set; }
         public DbSet<GenericPrediction> GenericPrediction { get; set; }
         public DbSet<PresidentialPrediction> PresidentialPrediction { get; set; }
+        public DbSet<NosterRelation> NosterRelation { get; set; }
+        public DbSet<NosterMessage> NosterMessage { get; set; }
 
     }
 }

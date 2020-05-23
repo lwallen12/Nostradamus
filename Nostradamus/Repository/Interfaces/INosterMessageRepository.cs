@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nostradamus.Repository.Interfaces
 {
-    public interface INosterScoreRepository : IRepositoryBase<NosterScore>
+    public interface INosterMessageRepository: IRepositoryBase<NosterMessage>
     {
     }
 }

@@ -20,18 +20,18 @@ namespace Nostradamus.Repository
         public async Task<IEnumerable<NosterDto>> FindAllWithIncludes()
         {
             var Noster = await this._nostradamusContext.Set<Noster>().AsNoTracking()
-            .Include(n => n.NosterScore)
+            //.Include(n => n.NosterScore)
             .Include(n => n.GenericEvents)
             .Include(n => n.GenericPredictions)
             .ToListAsync();
 
             GenericEventDto[] GenericEventDtos = new GenericEventDto[50];
-            NosterScoreDto nosterScoreDto = new NosterScoreDto();
+            //NosterScoreDto nosterScoreDto = new NosterScoreDto();
             GenericPredictionDto[] genericPredictionDtos = new GenericPredictionDto[50];
 
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<GenericEvent, GenericEventDto>();
-                cfg.CreateMap<NosterScore, NosterScoreDto>();
+                //cfg.CreateMap<NosterScore, NosterScoreDto>();
                 cfg.CreateMap<GenericPrediction, GenericPredictionDto>();
             });
             IMapper iMapper = config.CreateMapper();
@@ -44,7 +44,7 @@ namespace Nostradamus.Repository
                 PhoneNumberConfirmed = n.PhoneNumberConfirmed,
                 TwoFactorEnabled = n.TwoFactorEnabled,
                 CreationDate = n.CreationDate,
-                NosterScoreDto = iMapper.Map(n.NosterScore, nosterScoreDto),
+                //NosterScoreDto = iMapper.Map(n.NosterScore, nosterScoreDto),
                 GenericEventDtos = iMapper.Map(n.GenericEvents, GenericEventDtos),
                 GenericPredictionDtos = iMapper.Map(n.GenericPredictions, genericPredictionDtos)
             });

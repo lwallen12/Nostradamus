@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200523095900_NosterRelation")]
+    partial class NosterRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,25 +250,6 @@ namespace Nostradamus.Migrations
                     b.ToTable("Noster");
                 });
 
-            modelBuilder.Entity("Nostradamus.Models.NosterMessage", b =>
-                {
-                    b.Property<string>("NosterId");
-
-                    b.Property<string>("MessageSource");
-
-                    b.Property<DateTime>("OriginTime");
-
-                    b.Property<string>("MessageBody");
-
-                    b.Property<string>("MessageTitle");
-
-                    b.HasKey("NosterId", "MessageSource", "OriginTime");
-
-                    b.HasAlternateKey("MessageSource", "NosterId", "OriginTime");
-
-                    b.ToTable("NosterMessage");
-                });
-
             modelBuilder.Entity("Nostradamus.Models.NosterRelation", b =>
                 {
                     b.Property<string>("NosterId");
@@ -282,6 +265,21 @@ namespace Nostradamus.Migrations
                     b.HasKey("NosterId", "RelatedNosterId", "RelationType");
 
                     b.ToTable("NosterRelation");
+                });
+
+            modelBuilder.Entity("Nostradamus.Models.NosterScore", b =>
+                {
+                    b.Property<string>("NosterId");
+
+                    b.Property<int?>("GenericPredictionTotal");
+
+                    b.Property<int?>("RunningTotal");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("NosterId");
+
+                    b.ToTable("NosterScore");
                 });
 
             modelBuilder.Entity("Nostradamus.Models.PresidentialPrediction", b =>
@@ -623,19 +621,19 @@ namespace Nostradamus.Migrations
                         .HasForeignKey("NosterId");
                 });
 
-            modelBuilder.Entity("Nostradamus.Models.NosterMessage", b =>
+            modelBuilder.Entity("Nostradamus.Models.NosterRelation", b =>
                 {
                     b.HasOne("Nostradamus.Models.Noster", "Noster")
-                        .WithMany("NosterMessages")
+                        .WithMany()
                         .HasForeignKey("NosterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Nostradamus.Models.NosterRelation", b =>
+            modelBuilder.Entity("Nostradamus.Models.NosterScore", b =>
                 {
                     b.HasOne("Nostradamus.Models.Noster", "Noster")
-                        .WithMany("NosterRelations")
-                        .HasForeignKey("NosterId")
+                        .WithOne("NosterScore")
+                        .HasForeignKey("Nostradamus.Models.NosterScore", "NosterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

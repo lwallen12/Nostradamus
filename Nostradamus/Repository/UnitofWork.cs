@@ -15,8 +15,9 @@ namespace Nostradamus.Repository
         private IGenericEventRepository _genericEventRepository;
         private IGenericPredictionRepository _genericPredictionRepository;
         private INosterRepository _nosterRepository;
-        private INosterScoreRepository _nosterScoreRepository;
+        //private INosterScoreRepository _nosterScoreRepository;
         private IPresidentialPredictionRepository _presidentialPredictionRepository;
+        private INosterMessageRepository _nosterMessageRepository;
 
         public UnitofWork (NostradamusContext nostradamusContext)
         {
@@ -62,18 +63,30 @@ namespace Nostradamus.Repository
             }
         }
 
-        public INosterScoreRepository NosterScore
+        public INosterMessageRepository NosterMessage
         {
             get
             {
-                if (_nosterScoreRepository == null)
+                if(_nosterMessageRepository == null)
                 {
-                    _nosterScoreRepository = new NosterScoreRepository(_nostradamusContext);
+                    _nosterMessageRepository = new NosterMessageRepository(_nostradamusContext);
                 }
-
-                return _nosterScoreRepository;
+                return _nosterMessageRepository;
             }
         }
+
+        //public INosterScoreRepository NosterScore
+        //{
+        //    get
+        //    {
+        //        if (_nosterScoreRepository == null)
+        //        {
+        //            _nosterScoreRepository = new NosterScoreRepository(_nostradamusContext);
+        //        }
+
+        //        return _nosterScoreRepository;
+        //    }
+        //}
 
         public IPresidentialPredictionRepository PresidentialPrediction
         {
