@@ -10,6 +10,7 @@ namespace Nostradamus.Models
     {
         [Key]
         public string NosterId { get; set; }
+        public string NosterTargetUserName { get; set; }
         [Key]
         public string MessageSource { get; set; }
         [Key]

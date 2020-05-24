@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Nostradamus.DTOs;
+﻿using Nostradamus.DTOs;
 using Nostradamus.Models;
 using System;
 using System.Collections.Generic;

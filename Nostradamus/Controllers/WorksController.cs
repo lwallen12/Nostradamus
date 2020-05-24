@@ -95,7 +95,6 @@ namespace Nostradamus.Controllers
         public async Task<ActionResult<JwtSecurityToken>> MoreToken()
         {
             var token = await HttpContext.GetTokenAsync("access_token");
-           
 
             var handler = new JwtSecurityTokenHandler();
 
