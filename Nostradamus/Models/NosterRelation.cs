@@ -10,11 +10,13 @@ namespace Nostradamus.Models
     {
         [Key]
         public string NosterId { get; set; }
-        public string UserName { get; set; }
         [Key]
         public string RelatedNosterId { get; set; }
-        public string RelatedUserName { get; set; }
         [Key]
+        public DateTime CreationDate { get; set; }
+        public string UserName { get; set; }
+        public string RelatedUserName { get; set; }
+        public string RelationStatus { get; set; }
         public string RelationType { get; set; }
 
         public Noster Noster { get; set; }

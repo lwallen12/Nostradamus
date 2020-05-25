@@ -23,7 +23,6 @@ namespace Nostradamus.Controllers
             _unitofWork = unitofWork;
         }
 
-        [HttpGet("allrelated")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IEnumerable<NosterMessageDto>> FindAllRelated()
         {

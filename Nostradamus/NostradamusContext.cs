@@ -20,7 +20,7 @@ namespace Nostradamus
             {
                 table.NosterId,
                 table.RelatedNosterId,
-                table.RelationType
+                table.CreationDate
             });
 
             builder.Entity<NosterMessage>().HasKey(table => new

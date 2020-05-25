@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200525143029_AlterNosterRelation")]
+    partial class AlterNosterRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,29 +269,6 @@ namespace Nostradamus.Migrations
                     b.HasAlternateKey("MessageSource", "NosterId", "OriginTime");
 
                     b.ToTable("NosterMessage");
-                });
-
-            modelBuilder.Entity("Nostradamus.Models.NosterRelation", b =>
-                {
-                    b.Property<string>("NosterId");
-
-                    b.Property<string>("RelatedNosterId");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("RelatedUserName");
-
-                    b.Property<string>("RelationStatus");
-
-                    b.Property<string>("RelationType");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("NosterId", "RelatedNosterId", "CreationDate");
-
-                    b.HasAlternateKey("CreationDate", "NosterId", "RelatedNosterId");
-
-                    b.ToTable("NosterRelation");
                 });
 
             modelBuilder.Entity("Nostradamus.Models.PresidentialPrediction", b =>
@@ -635,14 +614,6 @@ namespace Nostradamus.Migrations
                 {
                     b.HasOne("Nostradamus.Models.Noster", "Noster")
                         .WithMany("NosterMessages")
-                        .HasForeignKey("NosterId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Nostradamus.Models.NosterRelation", b =>
-                {
-                    b.HasOne("Nostradamus.Models.Noster", "Noster")
-                        .WithMany("NosterRelations")
                         .HasForeignKey("NosterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

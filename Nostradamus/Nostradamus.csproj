@@ -19,6 +19,8 @@
     <Compile Remove="Migrations\20200219022929_AddNosterIdPresidentialEntity.Designer.cs" />
     <Compile Remove="Migrations\20200219023117_AddPresidentialPrediction.cs" />
     <Compile Remove="Migrations\20200219023117_AddPresidentialPrediction.Designer.cs" />
+    <Compile Remove="Migrations\20200525142432_AlterNosterRelation.cs" />
+    <Compile Remove="Migrations\20200525142432_AlterNosterRelation.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />

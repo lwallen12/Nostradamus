@@ -100,12 +100,5 @@ namespace Nostradamus.Controllers
              await _unitofWork.PresidentialPrediction.MarkDelete(presidentialPrediction);
         }
 
-
-        //Everything BELOW THIS LINE IS FOR TESTING ONLY!!!
-        /// <summary>
-        /// /EVERYTIHING
-        /// </summary>
-
-
         }
 }

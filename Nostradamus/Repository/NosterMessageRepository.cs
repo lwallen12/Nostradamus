@@ -19,8 +19,6 @@ namespace Nostradamus.Repository
 
         public async Task<List<NosterMessageDto>> AllRelatedMessages(Noster noster)
         {
-           //var noster = this._nostradamusContext.Noster.Single(n => n.UserName == nosterName);
-
             var myInbox = this._nostradamusContext.NosterMessage
                 .Where(myRM => myRM.NosterId == noster.Id).ToAsyncEnumerable();
 

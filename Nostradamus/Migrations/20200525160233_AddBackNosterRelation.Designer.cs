@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200525160233_AddBackNosterRelation")]
+    partial class AddBackNosterRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
