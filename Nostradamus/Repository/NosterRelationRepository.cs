@@ -35,6 +35,43 @@ namespace Nostradamus.Repository
             return await nosterRelationDtos;
         }
 
+        public async Task<List<NosterRelationDto>> GetMyRequestInbox(string nosterUserName)
+        {
+            var nosterRelations = this._nostradamusContext.NosterRelation
+                .Where(nr => nr.RelationStatus == "Pending")
+                .Where(nr => nr.RelatedUserName == nosterUserName).ToAsyncEnumerable();
+
+            var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
+            {
+                UserName = nr.UserName,
+                RelatedUserName = nr.RelatedUserName,
+                CreationDate = nr.CreationDate,
+                RelationStatus = nr.RelationStatus,
+                RelationType = nr.RelationType,
+            }).ToList();
+
+            return await nosterRelationDtos;
+        }
+
+        public async Task<List<NosterRelationDto>> GetMyPendingSent(string nosterUserName)
+        {
+            var nosterRelations = this._nostradamusContext.NosterRelation
+                .Where(nr => nr.UserName == nosterUserName)
+                .Where(nr => nr.RelationStatus == "Pending")
+                .ToAsyncEnumerable();
+
+            var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
+            {
+                UserName = nr.UserName,
+                RelatedUserName = nr.RelatedUserName,
+                CreationDate = nr.CreationDate,
+                RelationStatus = nr.RelationStatus,
+                RelationType = nr.RelationType,
+            }).ToList();
+
+            return await nosterRelationDtos;
+        }
+
         public async Task<NosterRelation> GetPendingRequest(NosterRelationDto nosterRelationDto)
         {
             var nosterRelation = this._nostradamusContext.NosterRelation

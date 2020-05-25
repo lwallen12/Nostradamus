@@ -37,6 +37,31 @@ namespace Nostradamus.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("reqinbox")]
+        public async Task<IEnumerable<NosterRelationDto>> GetMyRequestInbox()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+            var subject = tokenDecode.Subject;
+
+            return await _unitofWork.NosterRelation.GetMyRequestInbox(subject);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("pendingsent")]
+        public async Task<IEnumerable<NosterRelationDto>> GetPendingSent()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+            var subject = tokenDecode.Subject;
+
+            return await _unitofWork.NosterRelation.GetMyPendingSent(subject);
+        }
+
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("sendFriend")]
         public async Task<IActionResult> SendFriendRequest([FromBody] NosterRelationDto nosterRelationDto)
         {
