@@ -2,19 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200529205952_NosterDisplay")]
+    partial class NosterDisplay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -276,10 +278,6 @@ namespace Nostradamus.Migrations
                     b.Property<string>("RelatedNosterId");
 
                     b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("DisplayName");
-
-                    b.Property<string>("RelatedDisplayName");
 
                     b.Property<string>("RelatedUserName");
 

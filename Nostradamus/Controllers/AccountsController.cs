@@ -61,34 +61,7 @@ namespace Nostradamus.Controllers
             throw new ApplicationException("Problem with Username or password. Resetting may not be set up yet! :(");
         }
 
-        [HttpPost("LoginvTwo")]
-        public async Task<object> LoginvTwo([FromBody] LoginDto model)
-        {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-
-            if (result.Succeeded)
-            {
-                var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-
-                //update this appUser so that RefreshToken is new and that RefreshExpiration is new
-                appUser.RefreshToken = GenerateRefreshToken();
-                appUser.RefreshExpiration = DateTime.Now.AddDays(1);
-
-                await _unitofWork.Noster.Update(appUser);
-
-                var accessToken = await GenerateJwtToken(model.Email, appUser);
-
-                TokenPackageDTO tokenPackageDTO = new TokenPackageDTO();
-
-                tokenPackageDTO.AccessToken = (string)accessToken;
-                tokenPackageDTO.RefreshExpiration = appUser.RefreshExpiration;
-                tokenPackageDTO.RefreshToken = appUser.RefreshToken;
-
-                return tokenPackageDTO; 
-            }
-
-            throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
-        }
+        
 
         [HttpPost("refresh")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -177,9 +150,7 @@ namespace Nostradamus.Controllers
             {
                 UserName = model.Email,
                 Email = model.Email,
-                CreationDate = DateTime.Now,
-                RefreshToken = GenerateRefreshToken(),
-                RefreshExpiration = DateTime.Now.AddDays(1)
+                CreationDate = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

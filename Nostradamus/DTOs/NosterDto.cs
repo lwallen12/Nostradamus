@@ -19,6 +19,8 @@ namespace Nostradamus.DTOs
         public bool PhoneNumberConfirmed { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public DateTime? CreationDate { get; set; }
+        public string DisplayName { get; set; }
+        public string Motto { get; set; }
 
         //public NosterScoreDto NosterScoreDto { get; set; }
         public ICollection<GenericEventDto> GenericEventDtos { get; set; }

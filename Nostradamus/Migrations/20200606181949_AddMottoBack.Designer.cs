@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nostradamus;
 
 namespace Nostradamus.Migrations
 {
     [DbContext(typeof(NostradamusContext))]
-    partial class NostradamusContextModelSnapshot : ModelSnapshot
+    [Migration("20200606181949_AddMottoBack")]
+    partial class AddMottoBack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,10 +278,6 @@ namespace Nostradamus.Migrations
                     b.Property<string>("RelatedNosterId");
 
                     b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("DisplayName");
-
-                    b.Property<string>("RelatedDisplayName");
 
                     b.Property<string>("RelatedUserName");
 

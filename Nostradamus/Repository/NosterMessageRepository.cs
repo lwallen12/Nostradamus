@@ -33,13 +33,10 @@ namespace Nostradamus.Repository
                 Source = am.MessageSource,
                 OriginTime = am.OriginTime,
                 MessageBody = am.MessageBody,
-                Title = am.MessageTitle
+                IsSeen = am.IsSeen
             }).ToList();
 
             return await NosterMessageDtoList;
         }
     }
 }
-
-
-//Cannot implictly convert type 'system.collections.generic.IAsyncEnumerable<class>' to system.collections.generic.IEnumerable<class>

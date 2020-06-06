@@ -18,8 +18,10 @@ namespace Nostradamus.Models
         }
 
         public DateTime? CreationDate { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime? RefreshExpiration { get; set; }
+
+        //The two below should come in the next dev cycle
+        public string DisplayName { get; set; }
+        public string Motto { get; set; }
 
         //public NosterScore NosterScore { get; set; }
 

@@ -16,7 +16,7 @@ namespace Nostradamus.Models
         [Key]
         public DateTime OriginTime { get; set; }
         public string MessageBody { get; set; }
-        public string MessageTitle { get; set; }
+        public bool IsSeen { get; set; }
 
         public Noster Noster { get; set; }
     }

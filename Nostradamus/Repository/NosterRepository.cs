@@ -44,6 +44,8 @@ namespace Nostradamus.Repository
                 PhoneNumberConfirmed = n.PhoneNumberConfirmed,
                 TwoFactorEnabled = n.TwoFactorEnabled,
                 CreationDate = n.CreationDate,
+                DisplayName = n.DisplayName,
+                Motto = n.Motto,
                 //NosterScoreDto = iMapper.Map(n.NosterScore, nosterScoreDto),
                 GenericEventDtos = iMapper.Map(n.GenericEvents, GenericEventDtos),
                 GenericPredictionDtos = iMapper.Map(n.GenericPredictions, genericPredictionDtos)

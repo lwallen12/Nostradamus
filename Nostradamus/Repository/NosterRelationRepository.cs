@@ -26,7 +26,9 @@ namespace Nostradamus.Repository
             var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
             {
                 UserName = nr.UserName,
+                DisplayName = nr.DisplayName,
                 RelatedUserName = nr.RelatedUserName,
+                RelatedDisplayName = nr.RelatedDisplayName,
                 CreationDate = nr.CreationDate,
                 RelationStatus = nr.RelationStatus,
                 RelationType = nr.RelationType,
@@ -44,7 +46,9 @@ namespace Nostradamus.Repository
             var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
             {
                 UserName = nr.UserName,
+                DisplayName = nr.DisplayName,
                 RelatedUserName = nr.RelatedUserName,
+                RelatedDisplayName = nr.RelatedDisplayName,
                 CreationDate = nr.CreationDate,
                 RelationStatus = nr.RelationStatus,
                 RelationType = nr.RelationType,
@@ -63,7 +67,9 @@ namespace Nostradamus.Repository
             var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
             {
                 UserName = nr.UserName,
+                DisplayName = nr.DisplayName,
                 RelatedUserName = nr.RelatedUserName,
+                RelatedDisplayName = nr.RelatedDisplayName,
                 CreationDate = nr.CreationDate,
                 RelationStatus = nr.RelationStatus,
                 RelationType = nr.RelationType,
@@ -71,6 +77,8 @@ namespace Nostradamus.Repository
 
             return await nosterRelationDtos;
         }
+
+
 
         public async Task<NosterRelation> GetPendingRequest(NosterRelationDto nosterRelationDto)
         {
@@ -80,6 +88,7 @@ namespace Nostradamus.Repository
 
             return await nosterRelation;
         }
+
 
         public async Task MarkAccepted(NosterRelation nosterRelation)
         {

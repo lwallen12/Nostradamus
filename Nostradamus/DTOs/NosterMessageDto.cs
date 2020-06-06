@@ -11,6 +11,6 @@ namespace Nostradamus.DTOs
         public string Source { get; set; }
         public DateTime OriginTime { get; set; }
         public string MessageBody { get; set; }
-        public string Title { get; set; }
+        public bool IsSeen { get; set; }
     }
 }

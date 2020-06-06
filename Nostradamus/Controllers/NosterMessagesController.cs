@@ -57,7 +57,6 @@ namespace Nostradamus.Controllers
             nosterMessage.MessageSource = nosterMessageDto.Source;
             nosterMessage.OriginTime = nosterMessageDto.OriginTime;
             nosterMessage.MessageBody = nosterMessageDto.MessageBody;
-            nosterMessage.MessageTitle = nosterMessageDto.Title;
             nosterMessage.NosterTargetUserName = nosterMessageDto.NosterTarget;
 
             try
