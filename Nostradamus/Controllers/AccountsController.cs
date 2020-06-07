@@ -150,7 +150,8 @@ namespace Nostradamus.Controllers
             {
                 UserName = model.Email,
                 Email = model.Email,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                DisplayName = model.DisplayName
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -241,7 +242,7 @@ namespace Nostradamus.Controllers
             [Required]
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
-
+            public string DisplayName { get; set; }
             public DateTime CreationDate { get; set; }
         }
 
