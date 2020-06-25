@@ -17,6 +17,38 @@ namespace Nostradamus.Repository
         {
         }
 
+        //This is really inefficient and I would like to know how to do it better...
+        public async Task<IEnumerable<NosterDto>> FindFromSearch(string search)
+        {
+            var nostersDisplayMatch = await _nostradamusContext.Set<Noster>().AsNoTracking()
+                .Where(n => n.DisplayName.Contains(search))
+                .ToListAsync(); ;
+
+            var nostersEmailMatch = await _nostradamusContext.Set<Noster>().AsNoTracking()
+                .Where(n => n.UserName.Contains(search))
+                .ToListAsync(); ;
+
+            var nostersMottoMatch = await _nostradamusContext.Set<Noster>().AsNoTracking()
+                .Where(n => n.Motto.Contains(search))
+                .ToListAsync();
+
+            var combined = nostersDisplayMatch.Concat(nostersEmailMatch.Concat(nostersMottoMatch));
+
+            var NosterDtoList = combined.Select(n => new NosterDto
+            {
+                UserName = n.UserName,
+                Email = n.Email,
+                PhoneNumber = n.PhoneNumber,
+                PhoneNumberConfirmed = n.PhoneNumberConfirmed,
+                TwoFactorEnabled = n.TwoFactorEnabled,
+                CreationDate = n.CreationDate,
+                DisplayName = n.DisplayName,
+                Motto = n.Motto
+                //NosterScoreDto = iMapper.Map(n.NosterScore, nosterScoreDto)
+            });
+            return NosterDtoList;
+        }
+
         public async Task<IEnumerable<NosterDto>> FindAllWithIncludes()
         {
             var Noster = await this._nostradamusContext.Set<Noster>().AsNoTracking()
@@ -61,5 +93,6 @@ namespace Nostradamus.Repository
 
             return noster;
         }
+
     }
 }

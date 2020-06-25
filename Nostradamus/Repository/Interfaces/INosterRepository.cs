@@ -12,5 +12,7 @@ namespace Nostradamus.Repository.Interfaces
         Task<IEnumerable<NosterDto>> FindAllWithIncludes();
 
         Noster GetForToken(string userName);
+
+        Task<IEnumerable<NosterDto>> FindFromSearch(string search);
     }
 }
