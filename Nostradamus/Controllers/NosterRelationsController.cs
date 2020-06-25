@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Nostradamus.Models;
 using System;
-
+using System.Linq;
 
 namespace Nostradamus.Controllers
 {
@@ -37,6 +37,23 @@ namespace Nostradamus.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("allpending")]
+        public async Task<IEnumerable<NosterRelationDto>> AllPending()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+            var subject = tokenDecode.Subject;
+
+            //Probably a little inefficient but I will hold off for now... May be useful to have these methods
+            //seperate anyway
+            var pendingReceived = await _unitofWork.NosterRelation.GetMyRequestInbox(subject);
+            var pendingSent = await _unitofWork.NosterRelation.GetMyPendingSent(subject);
+
+            return pendingReceived.Concat(pendingSent);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("reqinbox")]
         public async Task<IEnumerable<NosterRelationDto>> GetMyRequestInbox()
         {
@@ -51,6 +68,18 @@ namespace Nostradamus.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("pendingsent")]
         public async Task<IEnumerable<NosterRelationDto>> GetPendingSent()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+            var subject = tokenDecode.Subject;
+
+            return await _unitofWork.NosterRelation.GetMyPendingSent(subject);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("pendingsent")]
+        public async Task<IEnumerable<NosterRelationDto>> GetTopRandom()
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();

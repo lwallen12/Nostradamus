@@ -30,6 +30,8 @@ namespace Nostradamus.Repository
             var NosterMessageDtoList = allMessages.Select(am => new NosterMessageDto
             {
                 NosterTarget = am.NosterTargetUserName,
+                TargetDisplayName = am.TargetDisplayName,
+                SourceDisplayName = am.SourceDisplayName,
                 Source = am.MessageSource,
                 OriginTime = am.OriginTime,
                 MessageBody = am.MessageBody,

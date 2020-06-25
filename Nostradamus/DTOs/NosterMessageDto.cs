@@ -8,6 +8,8 @@ namespace Nostradamus.DTOs
     public class NosterMessageDto
     {
         public string NosterTarget { get; set; }
+        public string TargetDisplayName { get; set; }
+        public string SourceDisplayName { get; set; }
         public string Source { get; set; }
         public DateTime OriginTime { get; set; }
         public string MessageBody { get; set; }

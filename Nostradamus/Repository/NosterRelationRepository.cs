@@ -57,6 +57,27 @@ namespace Nostradamus.Repository
             return await nosterRelationDtos;
         }
 
+        //public async Task<List<NosterRelationDto>> GetTopRandom(string search)
+        //{
+        //    var nosterRelations = (from nosterRelation in this._nostradamusContext.NosterRelation
+        //                          where nosterRelation.DisplayName == search ||
+        //                          nosterRelation.UserName == search
+        //                          select nosterRelation);
+
+        //    var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
+        //    {
+        //        UserName = nr.UserName,
+        //        DisplayName = nr.DisplayName,
+        //        RelatedUserName = nr.RelatedUserName,
+        //        RelatedDisplayName = nr.RelatedDisplayName,
+        //        CreationDate = nr.CreationDate,
+        //        RelationStatus = nr.RelationStatus,
+        //        RelationType = nr.RelationType,
+        //    }).ToList();
+
+        //    return nosterRelations;
+        //}
+
         public async Task<List<NosterRelationDto>> GetMyPendingSent(string nosterUserName)
         {
             var nosterRelations = this._nostradamusContext.NosterRelation

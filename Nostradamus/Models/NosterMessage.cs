@@ -11,8 +11,10 @@ namespace Nostradamus.Models
         [Key]
         public string NosterId { get; set; }
         public string NosterTargetUserName { get; set; }
+        public string TargetDisplayName { get; set; }
         [Key]
         public string MessageSource { get; set; }
+        public string SourceDisplayName { get; set; }
         [Key]
         public DateTime OriginTime { get; set; }
         public string MessageBody { get; set; }
