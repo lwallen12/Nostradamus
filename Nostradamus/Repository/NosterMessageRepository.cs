@@ -1,4 +1,5 @@
-﻿using Nostradamus.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using Nostradamus.DTOs;
 using Nostradamus.Models;
 using Nostradamus.Repository.Interfaces;
 using System;
@@ -17,15 +18,19 @@ namespace Nostradamus.Repository
             
         }
 
-        public async Task<List<NosterMessageDto>> AllRelatedMessages(Noster noster)
+        public async Task<List<NosterMessageDto>> AllRelatedMessages(Noster viewer, Noster friend)
         {
-            var myInbox = this._nostradamusContext.NosterMessage
-                .Where(myRM => myRM.NosterId == noster.Id).ToAsyncEnumerable();
 
-            var mySent = this._nostradamusContext.NosterMessage
-                .Where(myS => myS.MessageSource == noster.UserName).ToAsyncEnumerable();
+            var myRec = _nostradamusContext.NosterMessage
+                .Where(nm => nm.MessageSource == viewer.UserName)
+                .Where(nm => nm.NosterTargetUserName == friend.UserName);
 
-            var allMessages = myInbox.Union(mySent);
+            var mySent = _nostradamusContext.NosterMessage
+                .Where(nm => nm.NosterTargetUserName == viewer.UserName)
+                .Where(nm => nm.MessageSource == friend.UserName);
+
+
+            var allMessages = myRec.Union(mySent);
 
             var NosterMessageDtoList = allMessages.Select(am => new NosterMessageDto
             {
@@ -36,9 +41,10 @@ namespace Nostradamus.Repository
                 OriginTime = am.OriginTime,
                 MessageBody = am.MessageBody,
                 IsSeen = am.IsSeen
-            }).ToList();
+            }).ToListAsync();
 
             return await NosterMessageDtoList;
         }
+
     }
 }

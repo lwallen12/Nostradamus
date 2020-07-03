@@ -23,8 +23,9 @@ namespace Nostradamus.Controllers
             _unitofWork = unitofWork;
         }
 
+        [HttpGet("{userName}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IEnumerable<NosterMessageDto>> FindAllRelated()
+        public async Task<IEnumerable<NosterMessageDto>> FindAllRelated(string userName)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
 
@@ -34,8 +35,9 @@ namespace Nostradamus.Controllers
             var subject = tokenDecode.Subject;
 
             var noster = _unitofWork.Noster.GetForToken(subject);
+            var nosterFriend = _unitofWork.Noster.GetForToken(userName);
 
-            return await _unitofWork.NosterMessage.AllRelatedMessages(noster);
+            return await _unitofWork.NosterMessage.AllRelatedMessages(noster, nosterFriend);
 
         }
 

@@ -9,6 +9,6 @@ namespace Nostradamus.Repository.Interfaces
 {
     public interface INosterMessageRepository: IRepositoryBase<NosterMessage>
     {
-        Task<List<NosterMessageDto>> AllRelatedMessages(Noster noster);
+        Task<List<NosterMessageDto>> AllRelatedMessages(Noster viewer, Noster friend);
     }
 }
