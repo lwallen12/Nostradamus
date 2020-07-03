@@ -26,6 +26,10 @@ namespace Nostradamus.Controllers
         [HttpPost("search")]
         public async Task<IEnumerable<NosterDto>> GetSearched([FromBody] SearchDto search)
         {
+            NosterDto[] nosterDtos = new NosterDto[100];
+
+            
+
             return await _unitofWork.Noster.FindFromSearch(search.Search);
         }
     }

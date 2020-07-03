@@ -6,6 +6,7 @@ using Nostradamus.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Nostradamus.Repository
@@ -22,7 +23,7 @@ namespace Nostradamus.Repository
         {
             var nostersDisplayMatch = await _nostradamusContext.Set<Noster>().AsNoTracking()
                 .Where(n => n.DisplayName.Contains(search))
-                .ToListAsync(); ;
+                .ToListAsync(); 
 
             var nostersEmailMatch = await _nostradamusContext.Set<Noster>().AsNoTracking()
                 .Where(n => n.UserName.Contains(search))
@@ -32,9 +33,11 @@ namespace Nostradamus.Repository
                 .Where(n => n.Motto.Contains(search))
                 .ToListAsync();
 
-            var combined = nostersDisplayMatch.Concat(nostersEmailMatch.Concat(nostersMottoMatch));
+            var combined = nostersDisplayMatch.Concat(nostersEmailMatch.Concat(nostersMottoMatch)).Take(100).ToList();
 
-            var NosterDtoList = combined.Select(n => new NosterDto
+            var distinct = combined.GroupBy(elem => elem.UserName).Select(group => group.First());
+
+            var NosterDtoList = distinct.Select(n => new NosterDto
             {
                 UserName = n.UserName,
                 Email = n.Email,
