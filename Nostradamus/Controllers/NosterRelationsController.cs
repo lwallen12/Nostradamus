@@ -36,33 +36,33 @@ namespace Nostradamus.Controllers
             return await _unitofWork.NosterRelation.GetMyFreinds(subject);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("allpending")]
-        public async Task<IEnumerable<NosterRelationDto>> AllPending()
-        {
-            var token = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
-            var subject = tokenDecode.Subject;
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[HttpGet("allpending")]
+        //public async Task<IEnumerable<NosterRelationDto>> AllPending()
+        //{
+        //    var token = await HttpContext.GetTokenAsync("access_token");
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+        //    var subject = tokenDecode.Subject;
 
-            //Probably a little inefficient but I will hold off for now... May be useful to have these methods
-            //seperate anyway
-            var pendingReceived = await _unitofWork.NosterRelation.GetMyRequestInbox(subject);
-            var pendingSent = await _unitofWork.NosterRelation.GetMyPendingSent(subject);
+        //    //Probably a little inefficient but I will hold off for now... May be useful to have these methods
+        //    //seperate anyway
+        //    var pendingReceived = await _unitofWork.NosterRelation.GetMyRequestInbox(subject);
+        //    var pendingSent = await _unitofWork.NosterRelation.GetMyPendingSent(subject);
 
-            return pendingReceived.Concat(pendingSent);
-        }
+        //    return pendingReceived.Concat(pendingSent);
+        //}
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("reqinbox")]
-        public async Task<IEnumerable<NosterRelationDto>> GetMyRequestInbox()
+        public async Task<IEnumerable<NosterDto>> GetMyRequestInbox()
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
             var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
             var subject = tokenDecode.Subject;
 
-            return await _unitofWork.NosterRelation.GetMyRequestInbox(subject);
+            return await  _unitofWork.NosterRelation.GetMyRequestInbox(subject);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,22 +77,22 @@ namespace Nostradamus.Controllers
             return await _unitofWork.NosterRelation.GetMyPendingSent(subject);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("pendingsent")]
-        public async Task<IEnumerable<NosterRelationDto>> GetTopRandom()
-        {
-            var token = await HttpContext.GetTokenAsync("access_token");
-            var handler = new JwtSecurityTokenHandler();
-            var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
-            var subject = tokenDecode.Subject;
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[HttpGet("pendingsent")]
+        //public async Task<IEnumerable<NosterRelationDto>> GetTopRandom()
+        //{
+        //    var token = await HttpContext.GetTokenAsync("access_token");
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var tokenDecode = handler.ReadToken(token) as JwtSecurityToken;
+        //    var subject = tokenDecode.Subject;
 
-            return await _unitofWork.NosterRelation.GetMyPendingSent(subject);
-        }
+        //    return await _unitofWork.NosterRelation.GetMyPendingSent(subject);
+        //}
 
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("sendFriend")]
-        public async Task<IActionResult> SendFriendRequest([FromBody] NosterRelationDto nosterRelationDto)
+        public async Task<IActionResult> SendFriendRequest([FromBody] NosterDto nosterDto)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -100,14 +100,14 @@ namespace Nostradamus.Controllers
             var subject = tokenDecode.Subject;
 
             var requestingNoster = _unitofWork.Noster.GetForToken(subject);
-            var requestedNoster = _unitofWork.Noster.GetForToken(nosterRelationDto.RelatedUserName);
+            var requestedNoster = _unitofWork.Noster.GetForToken(nosterDto.UserName);
 
             NosterRelation nosterRelation = new NosterRelation();
             nosterRelation.NosterId = requestingNoster.Id;
             nosterRelation.UserName = requestingNoster.UserName;
             nosterRelation.RelatedNosterId = requestedNoster.Id;
             nosterRelation.RelatedUserName = requestedNoster.UserName;
-            nosterRelation.CreationDate = nosterRelationDto.CreationDate;
+            nosterRelation.CreationDate = (DateTime)nosterDto.CreationDate;
             nosterRelation.RelationStatus = "Pending";
             nosterRelation.RelationType = "Friend";
             try
@@ -119,12 +119,12 @@ namespace Nostradamus.Controllers
                 return Ok(ex.InnerException.Message);
             }
 
-            return Ok(nosterRelationDto);
+            return Ok(nosterDto);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("confirmFriend")]
-        public async Task<IActionResult> ConfirmRequest([FromBody] NosterRelationDto nosterRelationDto)
+        public async Task<IActionResult> ConfirmRequest([FromBody] NosterDto nosterDto)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
             var handler = new JwtSecurityTokenHandler();
@@ -132,54 +132,34 @@ namespace Nostradamus.Controllers
             var subject = tokenDecode.Subject;
 
             var approvingNoster = _unitofWork.Noster.GetForToken(subject);
-            var reacherOuterNoster = _unitofWork.Noster.GetForToken(nosterRelationDto.RelatedUserName);
+            var reacherOuterNoster = _unitofWork.Noster.GetForToken(nosterDto.UserName);
 
-            if (nosterRelationDto.RelationStatus == "Approved")
+            
+            NosterRelation nosterRelation = new NosterRelation();
+            nosterRelation.NosterId = approvingNoster.Id;
+            nosterRelation.UserName = approvingNoster.UserName;
+            nosterRelation.CreationDate = (DateTime)nosterDto.CreationDate;
+            nosterRelation.RelatedNosterId = reacherOuterNoster.Id;
+            nosterRelation.RelatedUserName = reacherOuterNoster.UserName;
+            nosterRelation.RelationType = "Friend";
+            nosterRelation.RelationStatus = "Approved";
+
+            var updateRelation = await _unitofWork.NosterRelation.GetPendingRequest(reacherOuterNoster.UserName);
+
+            try
             {
-                NosterRelation nosterRelation = new NosterRelation();
-                nosterRelation.NosterId = approvingNoster.Id;
-                nosterRelation.UserName = approvingNoster.UserName;
-                nosterRelation.CreationDate = nosterRelationDto.CreationDate;
-                nosterRelation.RelatedNosterId = reacherOuterNoster.Id;
-                nosterRelation.RelatedUserName = reacherOuterNoster.UserName;
-                nosterRelation.RelationType = "Friend";
-                nosterRelation.RelationStatus = "Approved";
-
-                var updateRelation = await _unitofWork.NosterRelation.GetPendingRequest(nosterRelationDto);
-
-                try
-                {
-                    await _unitofWork.NosterRelation.Create(nosterRelation);
-                    await _unitofWork.NosterRelation.MarkAccepted(updateRelation);
-                }
-                catch (Exception ex)
-                {
-                    return Ok(ex.Message);
-                }
-                return Ok(nosterRelationDto);
+                await _unitofWork.NosterRelation.Create(nosterRelation);
+                await _unitofWork.NosterRelation.MarkAccepted(updateRelation);
             }
-            else
+            catch (Exception ex)
             {
-                NosterRelation updateRelation = new NosterRelation();
-                updateRelation.NosterId = reacherOuterNoster.Id;
-                updateRelation.UserName = reacherOuterNoster.UserName;
-                updateRelation.RelatedNosterId = approvingNoster.Id;
-                updateRelation.RelatedUserName = approvingNoster.UserName;
-                updateRelation.RelationType = "Friend";
-                updateRelation.RelationStatus = "Denied";
-
-                try
-                {
-                    await _unitofWork.NosterRelation.Update(updateRelation);
-                }
-                catch (Exception ex)
-                {
-                    return Ok(ex.Message);
-                }
-                return Ok(nosterRelationDto);
+                return Ok(ex.Message);
+            }
+            return Ok(nosterDto);
+           
             }
         }
 
 
     }
-}
+

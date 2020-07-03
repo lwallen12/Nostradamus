@@ -37,24 +37,56 @@ namespace Nostradamus.Repository
             return await nosterRelationDtos;
         }
 
-        public async Task<List<NosterRelationDto>> GetMyRequestInbox(string nosterUserName)
+        public async Task<List<NosterDto>> GetMyRequestInbox(string nosterUserName)
         {
-            var nosterRelations = this._nostradamusContext.NosterRelation
+            var userNames = this._nostradamusContext.NosterRelation
                 .Where(nr => nr.RelationStatus == "Pending")
-                .Where(nr => nr.RelatedUserName == nosterUserName).ToAsyncEnumerable();
+                .Where(nr => nr.RelatedUserName == nosterUserName).ToList();
 
-            var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
+            List<string> nosterUsers = new List<string>();
+
+            foreach (var names in userNames)
             {
-                UserName = nr.UserName,
-                DisplayName = nr.DisplayName,
-                RelatedUserName = nr.RelatedUserName,
-                RelatedDisplayName = nr.RelatedDisplayName,
-                CreationDate = nr.CreationDate,
-                RelationStatus = nr.RelationStatus,
-                RelationType = nr.RelationType,
+                nosterUsers.Add(names.UserName);
+            }
+
+            //List<string> nosterUsers = new List<string>() { "a.allenwill@gmail.com", "bobbody@gmail.com" };
+
+            
+            var nosterList = _nostradamusContext.Noster.Where(n => nosterUsers.Contains(n.UserName));
+            //var nosterList = _nostradamusContext.Noster.Where(n => userNames.Contains());
+
+            var nosterDtos = nosterList.Select(n => new NosterDto
+            {
+                UserName = n.UserName,
+                Email = n.Email,
+                PhoneNumber = n.PhoneNumber,
+                PhoneNumberConfirmed = n.PhoneNumberConfirmed,
+                TwoFactorEnabled = n.TwoFactorEnabled,
+                CreationDate = n.CreationDate,
+                DisplayName = n.DisplayName,
+                Motto = n.Motto
+                ////NosterScoreDto = iMapper.Map(n.NosterScore, nosterScoreDto),
+                //GenericEventDtos = iMapper.Map(n.GenericEvents, GenericEventDtos),
+                //GenericPredictionDtos = iMapper.Map(n.GenericPredictions, genericPredictionDtos)
             }).ToList();
 
-            return await nosterRelationDtos;
+            return nosterDtos;
+
+            //var nosterDtos = this._nostradamusContext.Noster.Where(n => n.UserName in { })
+
+            //var nosterRelationDtos = nosterRelations.Select(nr => new NosterRelationDto
+            //{
+            //    UserName = nr.UserName,
+            //    DisplayName = nr.DisplayName,
+            //    RelatedUserName = nr.RelatedUserName,
+            //    RelatedDisplayName = nr.RelatedDisplayName,
+            //    CreationDate = nr.CreationDate,
+            //    RelationStatus = nr.RelationStatus,
+            //    RelationType = nr.RelationType,
+            //}).ToList();
+
+            //return await nosterRelationDtos;
         }
 
         //public async Task<List<NosterRelationDto>> GetTopRandom(string search)
@@ -101,11 +133,13 @@ namespace Nostradamus.Repository
 
 
 
-        public async Task<NosterRelation> GetPendingRequest(NosterRelationDto nosterRelationDto)
+        public async Task<NosterRelation> GetPendingRequest(string userName)
         {
+            var noster = _nostradamusContext.Noster.Single(n => n.UserName == userName);
+
             var nosterRelation = this._nostradamusContext.NosterRelation
                 .Where(nr => nr.RelationStatus == "Pending")
-                .Where(nr => nr.UserName == nosterRelationDto.RelatedUserName).FirstOrDefaultAsync();
+                .Where(nr => nr.UserName == userName).FirstOrDefaultAsync();
 
             return await nosterRelation;
         }
@@ -131,5 +165,10 @@ namespace Nostradamus.Repository
 
         //    }
         //}
+    }
+
+    public class UserNameOnlyDto
+    {
+        public string UserName { get; set; }
     }
 }

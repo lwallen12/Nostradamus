@@ -15,8 +15,8 @@ namespace Nostradamus.Repository.Interfaces
         //Task<IActionResult> ReviewFriendRequest(NosterRelationDto nosterRelationDto);
 
         Task MarkAccepted(NosterRelation nosterRelation);
-        Task<NosterRelation> GetPendingRequest(NosterRelationDto nosterRelationDto);
+        Task<NosterRelation> GetPendingRequest(string nosterUserName);
         Task<List<NosterRelationDto>> GetMyPendingSent(string nosterUserName);
-        Task<List<NosterRelationDto>> GetMyRequestInbox(string nosterUserName);
+        Task<List<NosterDto>> GetMyRequestInbox(string nosterUserName);
     }
 }
