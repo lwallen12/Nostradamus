@@ -18,5 +18,7 @@ namespace Nostradamus.Repository.Interfaces
         Task<NosterRelation> GetPendingRequest(string nosterUserName);
         Task<List<NosterRelationDto>> GetMyPendingSent(string nosterUserName);
         Task<List<NosterDto>> GetMyRequestInbox(string nosterUserName);
+
+        Task MarkDenied(NosterRelation nosterRelation);
     }
 }

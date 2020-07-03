@@ -107,7 +107,7 @@ namespace Nostradamus.Controllers
             nosterRelation.UserName = requestingNoster.UserName;
             nosterRelation.RelatedNosterId = requestedNoster.Id;
             nosterRelation.RelatedUserName = requestedNoster.UserName;
-            nosterRelation.CreationDate = (DateTime)nosterDto.CreationDate;
+            nosterRelation.CreationDate = DateTime.UtcNow;
             nosterRelation.RelationStatus = "Pending";
             nosterRelation.RelationType = "Friend";
             try
@@ -138,7 +138,7 @@ namespace Nostradamus.Controllers
             NosterRelation nosterRelation = new NosterRelation();
             nosterRelation.NosterId = approvingNoster.Id;
             nosterRelation.UserName = approvingNoster.UserName;
-            nosterRelation.CreationDate = (DateTime)nosterDto.CreationDate;
+            nosterRelation.CreationDate = DateTime.UtcNow;
             nosterRelation.RelatedNosterId = reacherOuterNoster.Id;
             nosterRelation.RelatedUserName = reacherOuterNoster.UserName;
             nosterRelation.RelationType = "Friend";
@@ -158,7 +158,27 @@ namespace Nostradamus.Controllers
             return Ok(nosterDto);
            
             }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("denyFriend")]
+        public async Task<IActionResult> DenyRequest([FromBody] NosterDto nosterDto)
+        {
+            var reacherOuterNoster = _unitofWork.Noster.GetForToken(nosterDto.UserName);
+
+            var updateRelation = await _unitofWork.NosterRelation.GetPendingRequest(reacherOuterNoster.UserName);
+
+            try
+            {
+                await _unitofWork.NosterRelation.MarkDenied(updateRelation);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+            return Ok(nosterDto);
         }
+
+    }
 
 
     }

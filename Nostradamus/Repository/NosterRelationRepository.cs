@@ -153,6 +153,14 @@ namespace Nostradamus.Repository
             await _nostradamusContext.SaveChangesAsync();
         }
 
+        public async Task MarkDenied(NosterRelation nosterRelation)
+        {
+            nosterRelation.RelationStatus = "Denied";
+            _nostradamusContext.Set<NosterRelation>().Update(nosterRelation);
+
+            await _nostradamusContext.SaveChangesAsync();
+        }
+
         //public async Task<IActionResult> SendFriendRequest(NosterRelationDto nosterRelationDto)
         //{
 
