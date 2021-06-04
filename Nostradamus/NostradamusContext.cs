@@ -20,7 +20,7 @@ namespace Nostradamus
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("Server=test1.ce8cn9mhhgds.us-east-1.rds.amazonaws.com;Database=Nostradamus;Uid=Wallen;Pwd=MyRDSdb1;Allow User Variables=True;");
+            optionsBuilder.UseMySql("Edited manually for protection");
         }
 
         public DbSet<GenericEvent> GenericEvent { get; set; }
